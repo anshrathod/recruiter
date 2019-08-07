@@ -34,7 +34,12 @@
 <body style="background : url(https://images.pexels.com/photos/905873/pexels-photo-905873.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);background-repeat: no-repeat;background-size: cover;">
     <div class="container">
         <div class = "row ">
-            <div class = "col-md-6" style="color: white;"></div>
+            <div class = "col-md-6" style="color: white;">
+                <div id="" style="padding-top: 85%; ">
+                    <h3 class="" style="font-size:200% ; color:blanchedalmond">We Provide Jobs For</h3>
+                    <h1><strong id="changeText" style="color:lightgoldenrodyellow">ENGINEERS</strong></h1>
+                </div>
+            </div>
             <div class = "col-md-6">
                 <br>
                 <div class="jumbotron">
@@ -97,3 +102,20 @@
     </div>
 </body>
 </html>
+
+<script>
+    var myVar
+    var professions = ['ENGINEERS','ACCOUNTANTS','testers','DEVELOPERS','CODERS']
+    var t = document.getElementById("changeText").innerHTML
+    var i = 0
+    function updateText()
+    {
+        t = professions[i % professions.length];
+        console.log(t)
+        document.getElementById("changeText").innerHTML = t.toUpperCase();        
+        i++;
+    }
+    myVar = setInterval(updateText, 1000);
+
+
+</script>
