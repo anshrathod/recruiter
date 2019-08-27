@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+ <!-- <div class = "row" > 	
+	<div class="col-md-2">
+		<div class="card">
+			<div class="card-body">
+			        <p>Username</p><hr>
+			        <p>Applied Jobs</p><hr>
+			        <p>View Profile</p><hr>
+			        <p>Username</p><hr>
+			        <p>Applied Jobs</p><hr>
+			        <p>View Profile</p><hr>
+			        <p>Username</p><hr>
+			        <p>Applied Jobs</p><hr>
+			        <p>View Profile</p><hr>
+			        <p>Username</p><hr>
+			        <p>Applied Jobs</p><hr>
+			        <p>View Profile</p><hr>
+			        <p>Username</p><hr>
+			        <p>Applied Jobs</p><hr>
+			        <p>View Profile</p><hr>
+
+			</div>
+		</div>
+	</div>
+	<div class="col-md-10">
+		<div class="card-deck">
+	        <div class="card">
+			    <img class="card-img-top" src="https://www.roberthalf.co.nz/themes/custom/rhalf/assets/images/JobAlertModal.jpg" alt="Card image cap">
+			    <div class="card-body">
+				    <h5 class="card-title">Software Engineer</h5>
+				    <p class="card-text">Microsoft<br>Stipend:Rs 2000-5000<br>Duration:6 months </p>
+			    </div>
+			    <div class="card-footer" style="background-color: white">
+			    	<div class="btn btn-block btn-outline-success">Apply Now</div>
+			    </div>
+	        </div> 
+
+	        <div class="card">
+			    <img class="card-img-top" src="https://www.roberthalf.co.nz/themes/custom/rhalf/assets/images/JobAlertModal.jpg" alt="Card image cap">
+			    <div class="card-body">
+				    <h5 class="card-title">Software Engineer</h5>
+				    <p class="card-text">Microsoft<br>Stipend:Rs 2000-5000<br>Duration:6 months </p>
+			    </div>
+			    <div class="card-footer" style="background-color: white">
+			    	<div class="btn btn-block btn-outline-success">Apply Now</div>
+			    </div>
+	        </div> 
+
+	        <div class="card">
+			    <img class="card-img-top" src="https://www.roberthalf.co.nz/themes/custom/rhalf/assets/images/JobAlertModal.jpg" alt="Card image cap">
+			    <div class="card-body">
+				    <h5 class="card-title">Software Engineer</h5>
+				    <p class="card-text">Microsoft<br>Stipend:Rs 2000-5000<br>Duration:6 months </p>
+			    </div>
+			    <div class="card-footer" style="background-color: white">
+			    	<div class="btn btn-block btn-outline-success">Apply Now</div>
+			    </div>
+	        </div> 
+		</div>
+	</div> -->
+
+	<h1>Here all the jobs will be displayed</h1>
+
+	{% for job in jobs %}
+		<p>Title - {{ job.title }}</p>
+		<p>Salary - {{ job.salary }}</p>
+		<p>Min Exp - {{ job.min_exp }}</p>
+		<br>
+	{% endfor %}
+{% endblock content %}
