@@ -1,61 +1,84 @@
 {% extends "layout.html" %}
 {% block content %}
 	<div class="row">
-	    <div class="col-md-8">
+		<div class="col-md-3">
+			<div class="card"style="padding: 5%;"><p class="text text-center" style="font-size:125%;">Applied Jobs<hr></p>
+				{% for i,j,k in appliedjobs %}
+				<a href="Company link">i</a>
+				<p>j</p>
+				<p>k</p>
+				<hr>
+				{% endfor %}
+			</div>
+		</div>
+	    <div class="col-md-6">
 		    <div class="content-section">
-			  <div class="media">
-			    <img class="rounded-circle account-img" src="{{ image_file }}">
-			    <div class="media-body">
-			      <h2 class="account-heading">{{ current_user.username }}</h2>
-			      <p class="text-secondary">{{ current_user.email }}</p>
-			    </div>
-			  </div>
-		        <form method="POST" action="" enctype="multipart/form-data">
-		            {{ form.hidden_tag() }}
-		            <fieldset class="form-group">
-		                <legend class="border-bottom mb-4">Profile Info</legend>
-		                <div class="form-group">
-		                    {{ form.username.label(class="form-control-label") }}
-
-		                    {% if form.username.errors %}
-		                        {{ form.username(class="form-control form-control-lg is-invalid") }}
-		                        <div class="invalid-feedback">
-		                            {% for error in form.username.errors %}
-		                                <span>{{ error }}</span>
-		                            {% endfor %}
-		                        </div>
-		                    {% else %}
-		                        {{ form.username(class="form-control form-control-lg") }}
-		                    {% endif %}
-		                </div>
-		                <div class="form-group">
-		                    {{ form.email.label(class="form-control-label") }}
-		                    {% if form.email.errors %}
-		                        {{ form.email(class="form-control form-control-lg is-invalid") }}
-		                        <div class="invalid-feedback">
-		                            {% for error in form.email.errors %}
-		                                <span>{{ error }}</span>
-		                            {% endfor %}
-		                        </div>
-		                    {% else %}
-		                        {{ form.email(class="form-control form-control-lg") }}
-		                    {% endif %}
-		                </div>
-		                <div class="form-group">
-		                    {{ form.picture.label() }}
-		                    {{ form.picture(class="form-control-file") }}
-		                    {% if form.picture.errors %}
-		                    	{% for error in form.picture.errors %}
-	                                <span class="text-danger">{{ error }}</span><br>
-	                            {% endfor %}
-		                    {% endif %}
-		                </div>
-		            </fieldset>
-		            <div class="form-group">
-		                {{ form.submit(class="btn btn-outline-info") }}
-		            </div>
-		        </form>
+			  	<div class="row media">
+					<img class="col-md-4 rounded-circle account-img" src="{{ image_file }}">
+					<div class="col-md-6 media-body">
+					<h2 class="account-heading">{{ current_user.username }}</h2>
+					<p class="text-secondary">{{ current_user.email }}</p>
+					<button class="btn btn-dark btn-block">Update Profile</button>
+					</div>
+			  	</div>
+			  	<hr>
+			  	<div class="col-md-12 row">
+					<div class="col-md-3"><p style="font-size: 150%">Interests</p></div>
+					<div class="col-md-9">
+					{% for i in interests %}
+						<button class="btn btn-outline-success" style="margin:2%" disabled>{{ i }}</button>
+					{% endfor %}
+						<button class="btn btn-success">Add a Interest</button>
+					</div>
+				</div>
+				<br>
+				<div class="col-md-12 row">
+					<div class="col-md-3"><p style="font-size: 150%">Hobbies</p></div>
+					<div class="col-md-9">
+					{% for i in hobbies %}
+						<button class="btn btn-outline-danger" style="margin:2%" disabled>{{ i }}</button>
+					{% endfor %}
+						<button class="btn btn-danger">Add a Hobby</button>
+					</div>
+				</div>
+				<br>
+				<div class="col-md-12 row">
+					<div class="col-md-3"><p style="font-size: 150%">Skills</p></div>
+					<div class="col-md-9">
+					{% for i in skills %}
+						<button class="btn btn-outline-info" style="margin:2%" disabled>{{ i }}</button>
+					{% endfor %}
+						<button class="btn btn-info">Add a Skill</button>
+					</div>
+				</div>
+				<br>
 		    </div>
 		</div>
+		<div class="col-md-3">
+			<div class="card" style="padding: 5%"><p class="text text-center" style="font-size:125%;">Add a new Job</p>
+			<hr>
+				 <div class="form-group">
+				    <input type="text" class="form-control" id="CompanyName" aria-describedby="Comapny" placeholder="Company Name">
+				  </div>
+				  <div class="form-group">
+				    <input type="text" class="form-control" id="JobPosition" placeholder="My Position">
+				  </div>
+				  <div class="form-group">
+				    <input type="text" class="form-control" id="FromDate" placeholder="From Date">
+				  </div>
+				  <div class="form-group">
+				    <input type="text" class="form-control" id="ToDate" placeholder="To Date">
+				  </div>
+				  <button type="submit" class="btn btn-success">Submit</button>
+			</div>
+			{% for i in myjobs %}
+				<div class="card" style="margin-top:5%;padding: 5%">
+					<h5>{{ i.company }}</h5>
+					<p>{{ i.post }}</p>
+					<p>{{ i.from }} - {{ i.to }}</p>
+				</div>
+			{% endfor %}
+		</div>
+
 	</div>
 {% endblock content %}
