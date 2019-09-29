@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from flask_login import current_user
+# from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from recruiter.models import User
+# from recruiter.models import User
 import mysql.connector,json
 from flask import session
 
@@ -25,6 +25,7 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, username):
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
         cur = cnx.cursor()
+        print(session['username'])
         cur.execute("select * from applicants where username=%s;",(session['username'],))
         user = cur.fetchone()
         # Search for username in database

@@ -2,10 +2,10 @@ import os
 import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request,session
-from recruiter import app, db, bcrypt
+from recruiter import app#, db, bcrypt
 from recruiter.forms import RegistrationForm, LoginForm, UpdateProfileForm, JobForm
-from recruiter.models import User, Job
-from flask_login import login_user, current_user, logout_user, login_required
+# from recruiter.models import User, Job
+# from flask_login import login_user, current_user, logout_user, login_required
 import mysql.connector,json
 
 @app.route("/")
@@ -16,10 +16,10 @@ def home():
         current_user = session['username']
     return render_template('home.html',current_user=current_user)
 
-@app.route("/display")
-def display():
-    jobs = Job.query.all()
-    return render_template('display.html', jobs=jobs)
+# @app.route("/display")
+# def display():
+#     jobs = Job.query.all()
+#     return render_template('display.html', jobs=jobs)
 
 @app.route("/about")
 def about():
