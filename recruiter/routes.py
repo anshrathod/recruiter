@@ -1,12 +1,17 @@
+import json
 import os
 import secrets
+
+import mysql.connector
+from flask import flash, redirect, render_template, request, session, url_for
+from flask_login import current_user, login_required, login_user, logout_user
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request,session
-from recruiter import app, db, bcrypt
-from recruiter.forms import RegistrationForm, LoginForm, UpdateProfileForm, JobForm
-from recruiter.models import User, Job
-from flask_login import login_user, current_user, logout_user, login_required
-import mysql.connector,json
+
+from recruiter import app, bcrypt, db
+from recruiter.forms import (JobForm, LoginForm, RegistrationForm,
+                             UpdateProfileForm)
+from recruiter.models import Job, User
+
 
 @app.route("/")
 @app.route("/home")
@@ -37,7 +42,7 @@ def register():
             # if request.form['type'] == 'Applicant':
             if form.validate_on_submit():
                 cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
-                cur = cnx.cursor()
+                cur = cnx.cursor(buffered=True)
                 username = form.username.data
                 email = form.email.data
                 name = form.name.data
@@ -49,7 +54,7 @@ def register():
                 try:
                     import datetime
                     x = str(datetime.datetime.now())
-                    cur.execute("insert into applicants values(%s,%s,%s,aes_encrypt(%s,'key'),%s,%s);",(x,username,email,password,name,gender))
+                    cur.execute("insert into applicants values(%s,%s,%s,aes_encrypt(%s,'key'),%s,%s,'');",(x,username,email,password,name,gender))
                     print( "success for "+str(username)+str(name)) 
                     print(cur)
                     cnx.commit()
@@ -79,7 +84,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
-        cur = cnx.cursor()
+        cur = cnx.cursor(buffered=True)
         cur.execute("select * from applicants where email=%s and password=aes_encrypt(%s,'key');",(form.email.data,form.password.data))
         user = cur.fetchone()
         print(user)
@@ -138,13 +143,14 @@ def updateprofile():
     if 'username' in session and session['username']!=None:
         form = UpdateProfileForm()
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
-        cur = cnx.cursor()
+        cur = cnx.cursor(buffered=True)
         cur.execute("select * from applicants where username=%s;",(session['username'],))
         user = cur.fetchone()
         if form.validate_on_submit():
             # If the picture is changed
             if form.picture.data:
                 # Call the save function
+                os.remove(url_for('static', filename='profile_pics/' + user[6]))
                 picture_file = save_picture(form.picture.data)
                 # Update the picture in the database
             else:
@@ -176,7 +182,7 @@ def updateprofile():
 def profile():
     if 'username' in session and session['username']!=None:
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
-        cur = cnx.cursor()
+        cur = cnx.cursor(buffered=True)
         if request.method == "POST":
             # company=request.POST['company']
             # title=request.POST['title']
@@ -196,7 +202,6 @@ def profile():
             w,x,y,z=[],[],[],[]
             for i in skills:
                 x.append(i[0])
-            print(x)
             cur.execute("select a_id,name,title,j_status from company inner join job inner join applied_job on job.j_id=applied_job.j_id and company.c_id=job.c_id ")
             jobs = cur.fetchall()
             for i in jobs:
@@ -205,7 +210,6 @@ def profile():
                     z.append(i[2])
                     w.append(i[3])
             appliedjobs=zip(y,z,w)
-            print(appliedjobs)
             cur.execute("select company,title,fromdate,todate from applicant_job where a_id=%s",(user[0],))
             jobs = cur.fetchall()
             w,q,y,z=[],[],[],[]
@@ -218,25 +222,39 @@ def profile():
             cnx.commit()
             cur.close()
             cnx.close()
-            # image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
             return render_template('profile.html', title='Profile',current_user = user[1],appliedjobs=appliedjobs,
                                     image_file=image_file,username=user[1],email=user[2],skills=x,myjobs=myjobs)
     else:
         return redirect(url_for('login'))
 
+# @app.route("/company", methods=['GET', 'POST'])
+# def company():
+#     session['company'] = C_id
+#     pass
 
 @app.route("/job/new", methods=['GET', 'POST'])
 def new_job():
-    form = JobForm()
-    if form.validate_on_submit():
-        # Create new job
-        job = Job(title=form.title.data, salary=form.salary.data, min_exp=form.min_exp.data)
-        # Add job to database
-        db.session.add(job)
-        # Add the current user as the applicant to this job(is wrong logically. written just to check)
-        job.applicants.append(current_user)
-        # Commit the changes
-        db.session.commit()
-        flash('Your job has been created!', 'success')
-        return redirect(url_for('display'))
-    return render_template('create_job.html', title='New Job', form=form)
+    if 'company' in session:
+        form = JobForm()
+        if form.validate_on_submit():
+            # Create new job
+            import datetime
+            j_id = str(datetime.datetime.now())
+            title = form.title.data
+            salary = form.salary.data
+            min_exp = form.min_exp.data
+            c_id = session['company']
+            cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
+            cur = cnx.cursor(buffered=True)
+            cur.execute("insert into job values(%s,%s,%s,%s,%s);",(j_id,title,salary,min_exp,c_id))
+            cnx.commit()
+            cur.close()
+            cnx.close()
+            # Add job to database
+            # Add the current user as the applicant to this job(is wrong logically. written just to check)
+            # Commit the changes
+            flash('Your job has been created!', 'success')
+            return redirect(url_for('display'))
+        return render_template('create_job.html', title='New Job', form=form)
+    else:
+        return redirect(url_for('login'))

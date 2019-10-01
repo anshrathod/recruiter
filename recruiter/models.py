@@ -1,6 +1,8 @@
 
-from recruiter import db, login_manager
 from flask_login import UserMixin
+
+from recruiter import db, login_manager
+
 
 # Required to proceed
 @login_manager.user_loader

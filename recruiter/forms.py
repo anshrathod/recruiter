@@ -1,11 +1,17 @@
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from recruiter.models import User
-import mysql.connector,json
+import json
+
+import mysql.connector
 from flask import session
+from flask_login import current_user
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed, FileField
+from wtforms import (BooleanField, IntegerField, PasswordField, StringField,
+                     SubmitField, TextAreaField)
+from wtforms.validators import (DataRequired, Email, EqualTo, Length,
+                                ValidationError)
+
+from recruiter.models import User
+
 
 class RegistrationForm(FlaskForm):
     name = StringField('Name',
