@@ -6,12 +6,12 @@ import mysql.connector
 from flask import flash, redirect, render_template, request, session, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from PIL import Image
-
-from recruiter import app, bcrypt, db
-from recruiter.forms import (JobForm, LoginForm, RegistrationForm,
-                             UpdateProfileForm)
-from recruiter.models import Job, User
-
+from flask import render_template, url_for, flash, redirect, request,session
+from recruiter import app#, db, bcrypt
+from recruiter.forms import RegistrationForm, LoginForm, UpdateProfileForm, JobForm
+# from recruiter.models import User, Job
+# from flask_login import login_user, current_user, logout_user, login_required
+import mysql.connector,json
 
 @app.route("/")
 @app.route("/home")
@@ -21,10 +21,10 @@ def home():
         current_user = session['username']
     return render_template('home.html',current_user=current_user)
 
-@app.route("/display")
-def display():
-    jobs = Job.query.all()
-    return render_template('display.html', jobs=jobs)
+# @app.route("/display")
+# def display():
+#     jobs = Job.query.all()
+#     return render_template('display.html', jobs=jobs)
 
 @app.route("/about")
 def about():
@@ -165,7 +165,7 @@ def updateprofile():
             return redirect(url_for('profile'))
         # The user's current username and email should appear in the form
         elif request.method =="POST":
-            form.username.data = user[1]
+            # form.username.data = user[1]
             form.email.data =user[2]
             form.name.data = user[4]
             form.gender.data = user[5]
