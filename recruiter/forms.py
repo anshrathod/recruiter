@@ -26,7 +26,6 @@ class ApplicantRegistrationForm(FlaskForm):
     # To check if the username already exists
     def validate_username(self, username):
         print(username.data)
-        print(request.form['user_type'])
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
         cur = cnx.cursor(buffered=True)
         # cur.execute("select * from applicants where username=%s;",(username.data,))

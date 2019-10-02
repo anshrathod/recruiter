@@ -59,8 +59,7 @@
             {% endif %}
         </div>
     </nav>
-    <main class="main" role="main">
-        
+    <main role="main"> 
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
@@ -72,7 +71,6 @@
           {% endwith %}
           <div class="container pt-4">
           {% block content %}{% endblock %}
-          </div>
     </main>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -4,7 +4,7 @@ import secrets
 
 import mysql.connector
 from flask import flash, redirect, render_template, request, session, url_for
-from flask_login import current_user, login_required, login_user, logout_user
+# from flask_login import current_user, login_required, login_user, logout_user
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request,session
 from recruiter import app#, db, bcrypt
@@ -17,8 +17,10 @@ import mysql.connector,json
 @app.route("/home")
 def home():
     current_user = None
+    # If applicant is logged in then set current_user equal to applicant username
     if ('username' in session and session['username']!=None):
         current_user = session['username']
+    # If company is logged in then set current_user equal to company name
     if ('company' in session and session['company']!=None):
         current_user = session['company']
     return render_template('home.html',current_user=current_user)
@@ -44,11 +46,14 @@ def register():
         current_user = session['company']
         return render_template('home.html',current_user=current_user)
     else:
+        # If not already logged in then create form object
+        form = ApplicantRegistrationForm()
         if request.method == 'POST':
-            form = ApplicantRegistrationForm()
+            # If all form values are valid
             if form.validate_on_submit():
                 cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
                 cur = cnx.cursor(buffered=True)
+                # Get all the form values
                 username = form.username.data
                 email = form.email.data
                 name = form.name.data
@@ -56,10 +61,13 @@ def register():
                 if form.gender.data:
                     gender = form.gender.data
                 else:
+                    # If gender is not specified then set as ''
                     gender = ''
                 try:
                     import datetime
+                    # applicant primary key is date
                     x = str(datetime.datetime.now())
+                    # Insert into the table
                     cur.execute("insert into applicants values(%s,%s,%s,aes_encrypt(%s,'key'),%s,%s,'');",(x,username,email,password,name,gender))
                     cnx.commit()
                     cur.close()
@@ -74,13 +82,14 @@ def register():
                 cur.close()
                 cnx.close()
                 return redirect(url_for('register'))
-        form = ApplicantRegistrationForm()
+        print("errpr")
         return render_template('register.html' ,title='Register', form=form)
 
 
 @app.route("/company", methods=['GET', 'POST'])
 def registercomp():
     # session['type'] = usertype
+    # If already logged in
     if ('username' in session and session['username']!=None):
         current_user = session['username']
         return render_template('home.html',current_user=current_user)
@@ -88,13 +97,16 @@ def registercomp():
         current_user = session['company']
         return render_template('home.html',current_user=current_user)
     else:
+        # If not logged in then create the form object
+        form = CompanyRegistrationForm()
         if request.method == 'POST':
             print("post")
-            form = CompanyRegistrationForm()
+            # If all form values are valid
             if form.validate_on_submit():
                 print("hmm")
                 cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
                 cur = cnx.cursor(buffered=True)
+                # Get all the form values
                 name = form.name.data
                 location = form.location.data
                 email = form.email.data
@@ -102,6 +114,7 @@ def registercomp():
                 c_type = form.c_type.data
                 try:
                     import datetime
+                    # Company table primary key is date
                     x = str(datetime.datetime.now())
                     cur.execute("insert into company values(%s,%s,%s,aes_encrypt(%s,'key'),%s,%s);",(x,name,email,password,location,c_type))
                     cnx.commit()
@@ -117,8 +130,6 @@ def registercomp():
                 cur.close()
                 cnx.close()
                 return redirect(url_for('registercomp'))
-        print(form.errors)
-        form = CompanyRegistrationForm()
         return render_template('register_company.html' ,title='Register', form=form)
 
 @app.route("/login/", methods=['GET', 'POST'])
@@ -257,8 +268,10 @@ def addskill():
     skill = request.form['AddaSkill']
     cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
     cur = cnx.cursor(buffered=True)
+    # Get the current logged in applicant
     cur.execute("select * from applicants where username=%s;",(session['username'],))
     user = cur.fetchone()
+    # Insert the skill in the table
     cur.execute("insert into applicant_skill values(%s,%s);",(user[0],skill))
     cnx.commit()
     cur.close()
@@ -320,6 +333,7 @@ def company():
     if session['company']:
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
         cur = cnx.cursor(buffered=True)
+        # Get the current logged in company
         cur.execute('select * from company where c_id=%s',(session['company'],))
         company = cur.fetchone()
         print(company)
