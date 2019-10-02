@@ -17,13 +17,19 @@ import mysql.connector,json
 @app.route("/home")
 def home():
     current_user = None
+    comp= None
     # If applicant is logged in then set current_user equal to applicant username
     if ('username' in session and session['username']!=None):
         current_user = session['username']
     # If company is logged in then set current_user equal to company name
-    if ('company' in session and session['company']!=None):
-        current_user = session['company']
-    return render_template('home.html',current_user=current_user)
+    if session['company'] and session['company']!='':
+        cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
+        cur = cnx.cursor(buffered=True)
+        cur.execute("select * from company where c_id=%s",(session['company'],))
+        company = cur.fetchone()
+        current_user = company[1]
+        comp = company[0]
+    return render_template('home.html',current_user=current_user,comp=comp)
 
 # @app.route("/display")
 # def display():
@@ -32,7 +38,20 @@ def home():
 
 @app.route("/about")
 def about():
-    return render_template('about.html', title='About')
+    current_user = None
+    comp= None
+    # If applicant is logged in then set current_user equal to applicant username
+    if ('username' in session and session['username']!=None):
+        current_user = session['username']
+    # If company is logged in then set current_user equal to company name
+    if session['company'] and session['company']!='':
+        cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
+        cur = cnx.cursor(buffered=True)
+        cur.execute("select * from company where c_id=%s",(session['company'],))
+        company = cur.fetchone()
+        current_user = company[1]
+        comp = company[0]
+    return render_template('about.html', title='About',current_user=current_user,comp=comp)
 
 
 @app.route("/applicant", methods=['GET', 'POST'])
@@ -42,7 +61,7 @@ def register():
     if ('username' in session and session['username']!=None):
         current_user = session['username']
         return render_template('home.html',current_user=current_user)
-    elif ('company' in session and session['company']!=None):
+    elif session['company'] and session['company']!='':
         current_user = session['company']
         return render_template('home.html',current_user=current_user)
     else:
@@ -93,7 +112,7 @@ def registercomp():
     if ('username' in session and session['username']!=None):
         current_user = session['username']
         return render_template('home.html',current_user=current_user)
-    elif ('company' in session and session['company']!=None):
+    elif session['company'] and session['company']!='':
         current_user = session['company']
         return render_template('home.html',current_user=current_user)
     else:
@@ -138,7 +157,7 @@ def login():
     if ('username' in session and session['username']!=None):
         current_user = session['username']
         return render_template('home.html',current_user=current_user)
-    elif ('company' in session and session['company']!=None):
+    elif session['company'] and session['company']!='':
         current_user = session['company']
         return render_template('home.html',current_user=current_user)
     # form = LoginForm()
@@ -166,7 +185,7 @@ def login():
             return redirect(url_for('home'))
     elif company:
         # Log that user in 
-        session['company'] = company[1]
+        session['company'] = company[0]
         # To go back to the required page. 
         # Use get because it doesn't give error if no arguement present.
         next_page = request.args.get('next')
@@ -285,10 +304,10 @@ def profile():
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
         cur = cnx.cursor(buffered=True)
         if request.method == "POST":
-            # company=request.POST['company']
-            # title=request.POST['title']
-            # fromdate=request.POST['fromdate']
-            # todate=request.POST['todate']
+            # company=form.company.data
+            # title=form.title.data
+            # fromdate=form.fromdate.data
+            # todate=form.todate.data
             # cur.execute("insert into applicant_job values(%s,%s,%s,%s)",(company,title,fromdate,todate))
             # cnx.commit()
             # cur.close()
@@ -326,28 +345,32 @@ def profile():
             return render_template('profile.html', title='Profile',current_user = user[1],appliedjobs=appliedjobs,
                                     image_file=image_file,username=user[1],email=user[2],skills=x,myjobs=myjobs)
     else:
-        return redirect(url_for('login'))
+        flash("Login via a valid account!", 'warning')
+        return redirect(url_for('home'))
 
 @app.route("/company/profile", methods=['GET', 'POST'])
 def company():
-    if session['company']:
+    if session['company'] and session['company']!='':
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
         cur = cnx.cursor(buffered=True)
         # Get the current logged in company
         cur.execute('select * from company where c_id=%s',(session['company'],))
         company = cur.fetchone()
         print(company)
+        loc = company[4].split(',')
+        loc = ('%2c').join(loc)
+        loc = loc.split(' ')
+        q = ('%20').join(loc)
         # company_logo = url_for('static', filename='profile_pics/' + str(company[6]))
         cur.execute('select * from job where c_id=%s',(company[0],))
         jobs = cur.fetchall()
         print(jobs)
-        return render_template('company_profile.html',company=company,jobs=jobs)
+        return render_template('company_profile.html',company=company,jobs=jobs,q=q ,current_user=company[1],comp=company[0])
     
-
-    
+ 
 @app.route("/job/new", methods=['GET', 'POST'])
 def new_job():
-    if 'company' in session and session['company']!='':
+    if session['company'] and session['company']!='':
         form = JobForm()
         if form.validate_on_submit():
             # Create new job
@@ -356,18 +379,25 @@ def new_job():
             title = form.title.data
             salary = form.salary.data
             min_exp = form.min_exp.data
+            content = form.content.data
+            tags = form.tags.data
+            tags = tags.split(',')
             c_id = session['company']
             cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
             cur = cnx.cursor(buffered=True)
-            cur.execute("insert into job values(%s,%s,%s,%s,%s);",(j_id,title,salary,min_exp,c_id))
+            cur.execute("insert into job values(%s,%s,%s,%s,%s,%s);",(j_id,title,salary,min_exp,content,c_id))
             cnx.commit()
+            for i in tags:
+                cur.execute('insert into job_tags values (%s,%s);',(j_id,i))
+            cnx.commit()
+            flash(f'Your job has been created.', 'success')
             cur.close()
             cnx.close()
             # Add job to database
             # Add the current user as the applicant to this job(is wrong logically. written just to check)
             # Commit the changes
-            flash('Your job has been created!', 'success')
-            return redirect(url_for('display'))
-        return render_template('create_job.html', title='New Job', form=form)
+            return redirect(url_for('home'))
+        return render_template('create_job.html', title='New Job', form=form,comp=c_id)
     else:
-        return redirect(url_for('login'))
+        flash("Login via a valid company's handle!", 'warning')
+        return redirect(url_for('home'))

@@ -41,8 +41,15 @@ CREATE TABLE IF NOT EXISTS job(
     title VARCHAR(25)  NOT NULL,
     salary VARCHAR(100) NOT NULL,
 	min_exp VARCHAR(10) NOT NULL,
+    content VARCHAR(750) NOT NULL,
     c_id varchar(30),
     FOREIGN KEY (c_id) REFERENCES company(c_id) ON UPDATE CASCADE ON DELETE SET NULL 
+);
+
+CREATE TABLE IF NOT EXISTS job_tags(
+	j_id varchar(30),
+    tag varchar(50) NOT NULL,
+    FOREIGN KEY (j_id) REFERENCES job(j_id) ON UPDATE CASCADE ON DELETE SET NULL 
 );
 
 CREATE TABLE IF NOT EXISTS applied_job(
@@ -52,3 +59,6 @@ CREATE TABLE IF NOT EXISTS applied_job(
     FOREIGN KEY (a_id) REFERENCES applicants(a_id) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (j_id) REFERENCES job(j_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
+
+ALTER TABLE company
+ADD image_file VARCHAR(100) DEFAULT 'default1.png'

@@ -93,6 +93,7 @@ class JobForm(FlaskForm):
     salary = StringField('Salary', validators=[DataRequired()])
     min_exp = StringField('Experience Required', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
+    tags = TextAreaField('Tags',validators=[DataRequired(),Length(min=1)])
     submit = SubmitField('Post Job')
 
 class CompanyRegistrationForm(FlaskForm):

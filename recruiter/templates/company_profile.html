@@ -1,13 +1,64 @@
 {% extends "layout.html" %}
 {% block content %}
+<style>
+.mapouter{
+    position:relative;
+    text-align:right;
+    }
+.gmap_canvas {
+    overflow:hidden;
+    background:none!important;
+    min-width:100%;
+    }
+    </style>
+<div class="jumbotron p-5" >
+    <div class="row">
+        <h1 class="col-md-8">{{ company[1] }}</h1>
+        <button class="col-md-3 btn btn-outline-danger" >
+                        Change Password <span class="badge badge-primary"></span>
+        </button>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <p> {{ company[2] }}</p>
+            <p> {{ company[4] }}</p>
+            <p class="text text-muted text-info"> {{ company[5] }}</p>  
+        </div>
+        <div class="col-md-5 pr-5">
+            <div class="mapouter" >
+                <div class="gmap_canvas">
+                    <iframe id="gmap_canvas" src="https://maps.google.com/maps?q={{ q }}&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-block btn-info">
+                    Add Job <span class="badge badge-primary"></span>
+            </button>
+            <button class="btn btn-block btn-success mt-3">
+                    Update Info <span class="badge badge-primary"></span>
+            </button>
+        </div>
+    </div>
 
-{{company}}
-
-<br>
-<br>
-<br>
-{% for i in jobs %}
-{{ i }}
-{% endfor %}
-
+</div>
+<h2>Jobs Posted</h2><hr>
+<div class = "row m-2" >
+    <div class="row col-md-12">
+        {% for i in jobs %}
+            <div class="col-md-3 card m-2">
+                <img class="card-img-top" src="https://www.roberthalf.co.nz/themes/custom/rhalf/assets/images/JobAlertModal.jpg" alt="Card image cap">
+                <div class="card-body">
+                <h5 class="card-title">{{ i[1] }}</h5>
+                <p class="card-text">{{ company[1] }}<br>Salary:{{ i[2] }}<br>Experience : {{ i[3]}}</p>
+                </div>
+                <div class="card-footer" style="background-color: white">
+                <div class="btn btn-block btn-outline-success">View Details</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

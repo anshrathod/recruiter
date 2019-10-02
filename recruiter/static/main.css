@@ -112,3 +112,7 @@ a.article-title:hover {
   background: #125688;
   color: white;
 }
+
+.card-img-top{
+  height:50%;
+}
