@@ -18,39 +18,31 @@
 					<div class="col-md-6 media-body">
 					<h2 class="account-heading">{{ username }}</h2>
 					<p class="text-secondary">{{ email }}</p>
-					<form method="POST" action="/profile/update/">
+					<form method="GET" action="/profile/update/">
 					<button class="btn btn-dark btn-block">Update Profile</button>
 					</form>
 					</div>
 			  	</div>
 			  	<hr>
-			  	<div class="col-md-12 row">
-					<div class="col-md-3"><p style="font-size: 150%">Interests</p></div>
-					<div class="col-md-9">
-					{% for i in interests %}
-						<button class="btn btn-outline-success" style="margin:2%" disabled>{{ i }}</button>
-					{% endfor %}
-						<button class="btn btn-success">Add a Interest</button>
-					</div>
-				</div>
 				<br>
 				<div class="col-md-12 row">
-					<div class="col-md-3"><p style="font-size: 150%">Hobbies</p></div>
-					<div class="col-md-9">
-					{% for i in hobbies %}
-						<button class="btn btn-outline-danger" style="margin:2%" disabled>{{ i }}</button>
-					{% endfor %}
-						<button class="btn btn-danger">Add a Hobby</button>
-					</div>
-				</div>
-				<br>
-				<div class="col-md-12 row">
-					<div class="col-md-3"><p style="font-size: 150%">Skills</p></div>
+					<div class="col-md-3 mt-3"><p style="font-size: 150%">Skills</p></div>
 					<div class="col-md-9">
 					{% for i in skills %}
 						<button class="btn btn-outline-info" style="margin:2%" disabled>{{ i }}</button>
 					{% endfor %}
-						<button class="btn btn-info">Add a Skill</button>
+					<!-- Material form subscription -->
+						<form class="text-center" style="color: #757575;" method='POST' action="/addskill/">
+						<div class="row">
+							<div class="col-5 md-form">
+								<input type="text" name="AddaSkill" id="AddaSkill" class="form-control">
+								<label for="AddaSkill">Add a Skill</label>
+							</div>
+							<div class="col-7 mt-2">
+								<button class="btn btn-info z-depth-0 waves-effect" type="submit">Add Skill</button>
+							</div>
+						</div>
+						</form>					
 					</div>
 				</div>
 				<br>

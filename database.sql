@@ -27,10 +27,19 @@ CREATE TABLE IF NOT EXISTS applicant_job(
     FOREIGN KEY (a_id) REFERENCES applicants(a_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
+CREATE TABLE IF NOT EXISTS applied_job(
+	a_id varchar(30) ,
+    j_id varchar(30) ,
+    j_status varchar(25) NOT NULL,
+    FOREIGN KEY (a_id) REFERENCES applicants(a_id) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (j_id) REFERENCES job(j_id) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
 CREATE TABLE IF NOT EXISTS company(
 	c_id varchar(30) PRIMARY KEY ,
-    password VARBINARY(250) NOT NULL,
 	name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARBINARY(250) NOT NULL,
     location VARCHAR(200) ,
     c_type VARCHAR(100) NOT NULL
 );
@@ -44,10 +53,3 @@ CREATE TABLE IF NOT EXISTS job(
     FOREIGN KEY (c_id) REFERENCES company(c_id) ON UPDATE CASCADE ON DELETE SET NULL 
 );
 
-CREATE TABLE IF NOT EXISTS applied_job(
-	a_id varchar(30) ,
-    j_id varchar(30) ,
-    j_status varchar(25) NOT NULL,
-    FOREIGN KEY (a_id) REFERENCES applicants(a_id) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (j_id) REFERENCES job(j_id) ON UPDATE CASCADE ON DELETE SET NULL
-);

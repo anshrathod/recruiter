@@ -1,4 +1,88 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>About Page</h1>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 50%;
+  background-color:black;
+  color:white;
+}
+
+.fa-facebook:hover {
+  background: #3B5998;
+  color: white;
+}
+.fa-twitter:hover  {
+  background: #55ACEE;
+  color: white;
+}
+
+.fa-linkedin:hover  {
+  background: #007bb5;
+  color: white;
+}
+
+.fa-instagram:hover {
+  background: #125688;
+  color: white;
+}
+
+</style>
+
+<div class="container-fluid"> 
+    <div class="paddingAboutUs marginAboutUs" id="aboutUs">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="http://www.krassowskiphoto.com/wp-content/uploads/2018/01/krassowskiphoto-24.jpg">
+                    <div class="card-body">
+                        <h4 class="card-title">Lorem Ipsum</h4>
+                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius dolor, perferendis perspiciatis est ab cupiditate, quod, officiis et consequatur aliquid blanditiis facilis nesciunt iste deserunt delectus. At iure nemo deleniti?</p>
+                        <div class="row">
+                            <a href="#" class="col-2 ml-4 mr-3 p-2 fa fa-facebook"></a>
+                            <a href="#" class="col-2 mr-3 p-2 fa fa-twitter"></a>
+                            <a href="#" class="col-2 mr-3 p-2 fa fa-linkedin"></a>
+                            <a href="#" class="col-2 mr-3 p-2 fa fa-instagram"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="http://www.krassowskiphoto.com/wp-content/uploads/2018/01/krassowskiphoto-24.jpg">
+                    <div class="card-body">
+                        <h4 class="card-title">Lorem ipsum</h4>
+                        <p class="card-text">Lorem ipsum, dolor sit . Temporibus voluptatibus pariatur, officia enim rerum nobis dolorem quidem, reiciendis similique eius porro animi quae blanditiis ducimus veritatis, minima incidunt! Nobis, illum.</p>
+                        <div class="row">
+                            <a href="#" class="col-2 ml-4 mr-3 p-2 fa fa-facebook"></a>
+                            <a href="#" class="col-2 mr-3 p-2 fa fa-twitter"></a>
+                            <a href="#" class="col-2 mr-3 p-2 fa fa-linkedin"></a>
+                            <a href="#" class="col-2 mr-3 p-2 fa fa-instagram"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="http://www.krassowskiphoto.com/wp-content/uploads/2018/01/krassowskiphoto-24.jpg">
+                    <div class="card-body">
+                        <h4 class="card-title">Lorem ipsum</h4>
+                        <p class="card-text">Lorem ipsuctetur adipisicing elit. Temporibus numquam rerum ut soluta doloremque a est blanditiis laborum architecto, delectus, totam rem quam saepe itaque vero, maiores officiis. Distinctio, blanditiis.</p>
+                        <div class="row">
+                            <a href="#" class="col-2 ml-4 mr-3 p-2 fa fa-facebook"></a>
+                            <a href="#" class="col-2 mr-3 p-2 fa fa-twitter"></a>
+                            <a href="#" class="col-2 mr-3 p-2 fa fa-linkedin"></a>
+                            <a href="#" class="col-2 mr-3 p-2 fa fa-instagram"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

@@ -8,7 +8,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request,session
 from recruiter import app#, db, bcrypt
-from recruiter.forms import RegistrationForm, LoginForm, UpdateProfileForm, JobForm
+from recruiter.forms import ApplicantRegistrationForm, LoginForm, UpdateProfileForm, JobForm,CompanyRegistrationForm
 # from recruiter.models import User, Job
 # from flask_login import login_user, current_user, logout_user, login_required
 import mysql.connector,json
@@ -17,8 +17,10 @@ import mysql.connector,json
 @app.route("/home")
 def home():
     current_user = None
-    if 'username' in session and session['username']!=None:
+    if ('username' in session and session['username']!=None):
         current_user = session['username']
+    if ('company' in session and session['company']!=None):
+        current_user = session['company']
     return render_template('home.html',current_user=current_user)
 
 # @app.route("/display")
@@ -31,15 +33,19 @@ def about():
     return render_template('about.html', title='About')
 
 
-@app.route("/register", methods=['GET', 'POST'])
+@app.route("/applicant", methods=['GET', 'POST'])
 def register():
     # If already logged in
-    if 'username' in session and session['username']!=None:
-        return redirect(url_for('home'))
+    current_user = None
+    if ('username' in session and session['username']!=None):
+        current_user = session['username']
+        return render_template('home.html',current_user=current_user)
+    elif ('company' in session and session['company']!=None):
+        current_user = session['company']
+        return render_template('home.html',current_user=current_user)
     else:
-        form = RegistrationForm()
         if request.method == 'POST':
-            # if request.form['type'] == 'Applicant':
+            form = ApplicantRegistrationForm()
             if form.validate_on_submit():
                 cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
                 cur = cnx.cursor(buffered=True)
@@ -55,64 +61,123 @@ def register():
                     import datetime
                     x = str(datetime.datetime.now())
                     cur.execute("insert into applicants values(%s,%s,%s,aes_encrypt(%s,'key'),%s,%s,'');",(x,username,email,password,name,gender))
-                    print( "success for "+str(username)+str(name)) 
-                    print(cur)
                     cnx.commit()
                     cur.close()
                     cnx.close()
+                    print("yess")
                     flash(f'Your account has been created . You can now login.', 'success')
-                    return redirect(url_for('login'))
+                    return redirect(url_for('home'))
                 except Exception as e:
                     print('Registration Failed',e)
                     flash(f'An error occured while registering.Please try again.', 'error')
-                    return redirect(url_for('register'))
-            else:
                 cnx.commit()
                 cur.close()
                 cnx.close()
-                flash(f"Both the passwords don't match", 'warning')
-            # elif request.form['type'] == 'Company':
-            #     pass
-        else:
-            return render_template('register.html', title='Register', form=form)
+                return redirect(url_for('register'))
+        form = ApplicantRegistrationForm()
+        return render_template('register.html' ,title='Register', form=form)
 
-@app.route("/login", methods=['GET', 'POST'])
+
+@app.route("/company", methods=['GET', 'POST'])
+def registercomp():
+    # session['type'] = usertype
+    if ('username' in session and session['username']!=None):
+        current_user = session['username']
+        return render_template('home.html',current_user=current_user)
+    elif ('company' in session and session['company']!=None):
+        current_user = session['company']
+        return render_template('home.html',current_user=current_user)
+    else:
+        if request.method == 'POST':
+            print("post")
+            form = CompanyRegistrationForm()
+            if form.validate_on_submit():
+                print("hmm")
+                cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
+                cur = cnx.cursor(buffered=True)
+                name = form.name.data
+                location = form.location.data
+                email = form.email.data
+                password = form.password.data
+                c_type = form.c_type.data
+                try:
+                    import datetime
+                    x = str(datetime.datetime.now())
+                    cur.execute("insert into company values(%s,%s,%s,aes_encrypt(%s,'key'),%s,%s);",(x,name,email,password,location,c_type))
+                    cnx.commit()
+                    cur.close()
+                    cnx.close()
+                    print("yess")
+                    flash(f'Your account has been created . You can now login.', 'success')
+                    return redirect(url_for('home'))
+                except Exception as e:
+                    print('Registration Failed',e)
+                    flash(f'An error occured while registering.Please try again.', 'error')
+                cnx.commit()
+                cur.close()
+                cnx.close()
+                return redirect(url_for('registercomp'))
+        print(form.errors)
+        form = CompanyRegistrationForm()
+        return render_template('register_company.html' ,title='Register', form=form)
+
+@app.route("/login/", methods=['GET', 'POST'])
 def login():
     # If already logged in
-    if 'username' in session and session['username']!=None:
-        return redirect(url_for('home'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
-        cur = cnx.cursor(buffered=True)
-        cur.execute("select * from applicants where email=%s and password=aes_encrypt(%s,'key');",(form.email.data,form.password.data))
-        user = cur.fetchone()
-        print(user)
+    if ('username' in session and session['username']!=None):
+        current_user = session['username']
+        return render_template('home.html',current_user=current_user)
+    elif ('company' in session and session['company']!=None):
+        current_user = session['company']
+        return render_template('home.html',current_user=current_user)
+    # form = LoginForm()
+    # if form.validate_on_submit():
+    cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
+    cur = cnx.cursor(buffered=True)
+    cur.execute("select * from applicants where email=%s and password=aes_encrypt(%s,'key');",(request.form['email'],request.form['password']))
+    user = cur.fetchone()
+    cur.execute("select * from company where email=%s and password=aes_encrypt(%s,'key');",(request.form['email'],request.form['password']))
+    company = cur.fetchone()
+    print(user)
         # Check if user exists and his email and password match
-        if user:
-            # Log that user in 
-            session['username'] = user[1]
-            # To go back to the required page. 
-            # Use get because it doesn't give error if no arguement present.
-            next_page = request.args.get('next')
-            cnx.commit()
-            cur.close()
-            cnx.close()
-            if next_page:
-                return redirect(next_page)
-            else: 
-                return redirect(url_for('home'))
-        else:
-            cnx.commit()
-            cur.close()
-            cnx.close()
-            flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+    if user:
+        # Log that user in 
+        session['username'] = user[1]
+        # To go back to the required page. 
+        # Use get because it doesn't give error if no arguement present.
+        next_page = request.args.get('next')
+        cnx.commit()
+        cur.close()
+        cnx.close()
+        if next_page:
+            return redirect(next_page)
+        else: 
+            return redirect(url_for('home'))
+    elif company:
+        # Log that user in 
+        session['company'] = company[1]
+        # To go back to the required page. 
+        # Use get because it doesn't give error if no arguement present.
+        next_page = request.args.get('next')
+        cnx.commit()
+        cur.close()
+        cnx.close()
+        if next_page:
+            return redirect(next_page)
+        else: 
+            return redirect(url_for('home'))
+    else:
+        cnx.commit()
+        cur.close()
+        cnx.close()
+        flash('Login Unsuccessful. Please check email and password', 'danger')
+    return render_template('home.html')
 
 
 @app.route("/logout")
 def logout():
     session['username'] = None
+    session['company'] = None
     return redirect(url_for('home'))
 
 # To save the updated picture
@@ -140,43 +205,66 @@ def save_picture(form_picture):
 
 @app.route("/profile/update/", methods=['GET', 'POST'])
 def updateprofile():
+    # If user is logged in then continue
     if 'username' in session and session['username']!=None:
         form = UpdateProfileForm()
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
         cur = cnx.cursor(buffered=True)
         cur.execute("select * from applicants where username=%s;",(session['username'],))
         user = cur.fetchone()
-        if form.validate_on_submit():
+        print(user)
+        if request.method =="POST":
+            print("hfvnusi")
+            if form.validate_on_submit():
+                print("in validate")
             # If the picture is changed
-            if form.picture.data:
-                # Call the save function
-                os.remove(url_for('static', filename='profile_pics/' + user[6]))
-                picture_file = save_picture(form.picture.data)
-                # Update the picture in the database
+                if form.picture.data:
+                    os.remove(url_for('static', filename='profile_pics/' + user[6]))
+                    picture_file = save_picture(form.picture.data)
+                else:
+                    picture_file = user[6]
+                # Update the table
+                cur.execute("update applicants set name=%s,username=%s,gender=%s,image_file=%s where a_id=%s",(form.name.data,form.username.data,form.gender.data,picture_file,user[0]))
+                # Commit the changes
+                cnx.commit()
+                # Also update the session variable since it was changed
+                session['username'] = form.username.data
+                cur.close()
+                cnx.close()
+                flash('Your profile has been updated!', 'success')
+                return redirect(url_for('profile'))
             else:
-                picture_file = user[6]
-            # Commit the changes
-            print(form.name.data)
-            cur.execute("update applicants set email=%s,name=%s,gender=%s,image_file=%s where a_id=%s",(form.email.data,form.name.data,form.gender.data,picture_file,user[0]))
-            cnx.commit()
-            cur.close()
-            cnx.close()
-            flash('Your profile has been updated!', 'success')
-            return redirect(url_for('profile'))
-        # The user's current username and email should appear in the form
-        elif request.method =="POST":
-            # form.username.data = user[1]
-            form.email.data =user[2]
+                print(form.errors)
+
+       # When clicked on update form then populate the form with original values     
+        elif request.method == 'GET':
+            print("wrong")
+            form.username.data = user[1]
             form.name.data = user[4]
             form.gender.data = user[5]
-            image_file = url_for('static', filename='profile_pics/' + user[6])
-            cnx.commit()
-            cur.close()
-            cnx.close()
-            return render_template('update_profile.html', title='Profile',
-                                    image_file=image_file, form=form,username=user[1],email=user[2])
+        image_file = url_for('static', filename='profile_pics/' + user[6])
+        return render_template('update_profile.html', title='Profile',
+                                    image_file=image_file, form=form,username=user[1],current_user=session['username'])
+    
+    # Not logged in then redirect to login
     else:
         return redirect(url_for('login'))
+
+
+@app.route("/addskill/", methods=['GET','POST'])
+def addskill():
+    # Get the name of the skill to be added
+    skill = request.form['AddaSkill']
+    cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
+    cur = cnx.cursor(buffered=True)
+    cur.execute("select * from applicants where username=%s;",(session['username'],))
+    user = cur.fetchone()
+    cur.execute("insert into applicant_skill values(%s,%s);",(user[0],skill))
+    cnx.commit()
+    cur.close()
+    cnx.close()
+    return redirect(url_for('profile'))
+
 
 @app.route("/profile", methods=['GET', 'POST'])
 def profile():
@@ -227,14 +315,25 @@ def profile():
     else:
         return redirect(url_for('login'))
 
-# @app.route("/company", methods=['GET', 'POST'])
-# def company():
-#     session['company'] = C_id
-#     pass
+@app.route("/company/profile", methods=['GET', 'POST'])
+def company():
+    if session['company']:
+        cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
+        cur = cnx.cursor(buffered=True)
+        cur.execute('select * from company where c_id=%s',(session['company'],))
+        company = cur.fetchone()
+        print(company)
+        # company_logo = url_for('static', filename='profile_pics/' + str(company[6]))
+        cur.execute('select * from job where c_id=%s',(company[0],))
+        jobs = cur.fetchall()
+        print(jobs)
+        return render_template('company_profile.html',company=company,jobs=jobs)
+    
 
+    
 @app.route("/job/new", methods=['GET', 'POST'])
 def new_job():
-    if 'company' in session:
+    if 'company' in session and session['company']!='':
         form = JobForm()
         if form.validate_on_submit():
             # Create new job
