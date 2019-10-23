@@ -22,7 +22,7 @@ def home():
     if ('username' in session and session['username']!=None):
         current_user = session['username']
     # If company is logged in then set current_user equal to company name
-    if session['company'] and session['company']!='':
+    if session.get('company') and session['company']!='':
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
         cur = cnx.cursor(buffered=True)
         cur.execute("select * from company where c_id=%s",(session['company'],))
@@ -44,7 +44,7 @@ def about():
     if ('username' in session and session['username']!=None):
         current_user = session['username']
     # If company is logged in then set current_user equal to company name
-    if session['company'] and session['company']!='':
+    if session.get('company') and session['company']!='':
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
         cur = cnx.cursor(buffered=True)
         cur.execute("select * from company where c_id=%s",(session['company'],))
@@ -61,7 +61,7 @@ def register():
     if ('username' in session and session['username']!=None):
         current_user = session['username']
         return render_template('home.html',current_user=current_user)
-    elif session['company'] and session['company']!='':
+    elif session.get('company') and session['company']!='':
         current_user = session['company']
         return render_template('home.html',current_user=current_user)
     else:
@@ -112,7 +112,7 @@ def registercomp():
     if ('username' in session and session['username']!=None):
         current_user = session['username']
         return render_template('home.html',current_user=current_user)
-    elif session['company'] and session['company']!='':
+    elif session.get('company') and session['company']!='':
         current_user = session['company']
         return render_template('home.html',current_user=current_user)
     else:
@@ -157,7 +157,7 @@ def login():
     if ('username' in session and session['username']!=None):
         current_user = session['username']
         return render_template('home.html',current_user=current_user)
-    elif session['company'] and session['company']!='':
+    elif session.get('company') and session['company']!='':
         current_user = session['company']
         return render_template('home.html',current_user=current_user)
     # form = LoginForm()
@@ -350,7 +350,7 @@ def profile():
 
 @app.route("/company/profile", methods=['GET', 'POST'])
 def company():
-    if session['company'] and session['company']!='':
+    if session.get('company') and session['company']!='':
         cnx = mysql.connector.connect(host='localhost',user='root', database='recruiter')
         cur = cnx.cursor(buffered=True)
         # Get the current logged in company
@@ -370,7 +370,7 @@ def company():
  
 @app.route("/job/new", methods=['GET', 'POST'])
 def new_job():
-    if session['company'] and session['company']!='':
+    if session.get('company') and session['company']!='':
         form = JobForm()
         if form.validate_on_submit():
             # Create new job

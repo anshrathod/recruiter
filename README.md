@@ -1,10 +1,20 @@
 # Recuritment system v1.0
 
-Install Flask using command :
-```pip install flask```
+Requirements: 
+1) Python version 3.x
+2) Following Python Modules   
+	Install dependancies using the given commands:  
+```pip install flask```  
+```pip install flask-bcrypt```  
+```pip install Pillow```  
+```pip install flask-migrate```  
+```pip install flask```  
+```pip install Flask-WTF```  
+```pip install Flask-SQLAlchemy```   
 
-Go to inside the Recruiter-Flask directory
-Run the command : 
-```python recruiter.py```
+Steps to follow: 
+1) Move inside the root directory: 
+2) Run the command: 
+  ```python run.py```
 
-The website will be active at : *localhost:5000/*
+The website will be active at: *localhost:5000/*

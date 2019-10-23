@@ -34,16 +34,16 @@
                 </ul>
             </div>
             {% if current_user %}
-            <div class="col-md-6">
+            <div class="col-md-6" style="margin-left:6%;">
                 <ul class="navbar-nav">
-                        Heyyyy,
+                       
                     <li class="nav-item">
                         <a class="nav-link active" href=
                         {% if comp %}
                             {{url_for('company')}}
                         {% else %}
                             {{url_for('profile')}}
-                        {% endif %}>{{ current_user }}</a>
+                        {% endif %}>Hey,{{ current_user }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"  href={{url_for('logout')}}>Logout</a>

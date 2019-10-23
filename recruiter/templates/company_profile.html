@@ -48,14 +48,12 @@
 <div class = "row m-2" >
     <div class="row col-md-12">
         {% for i in jobs %}
-            <div class="col-md-3 card m-2">
+            <div class="col-md-3 card m-2 p-3">
                 <img class="card-img-top" src="https://www.roberthalf.co.nz/themes/custom/rhalf/assets/images/JobAlertModal.jpg" alt="Card image cap">
                 <div class="card-body">
                 <h5 class="card-title">{{ i[1] }}</h5>
-                <p class="card-text">{{ company[1] }}<br>Salary:{{ i[2] }}<br>Experience : {{ i[3]}}</p>
-                </div>
-                <div class="card-footer" style="background-color: white">
-                <div class="btn btn-block btn-outline-success">View Details</div>
+                <p class="card-text">{{ company[1] }}<br>Salary:{{ i[2] }}<br>Experience : {{ i[3]}}</p><hr>
+                <div class="btn btn-block btn-outline-success" style="margin-bottom:50%;">View Details</div>
                 </div>
             </div>
         {% endfor %}

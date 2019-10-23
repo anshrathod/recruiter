@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container-fluid">
-  <div class="paddingCarousel">
+  <div class="paddingCarousel" >
       <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
               <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -9,33 +9,33 @@
               <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
           </ol>
           <div class="carousel-inner">
-              <div class="carousel-item active">
-              <img class="d-block w-100" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16d86ab793d%20text%20%7B%20fill%3A%23555%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16d86ab793d%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22285.9140625%22%20y%3D%22217.7%22%3EFirst%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="First slide">
+              <div class="carousel-item active" style="max-height:500px"> 
+              <img class="d-block"   src="https://images.pexels.com/photos/1036808/pexels-photo-1036808.jpeg?cs=srgb&dl=desk-home-office-indoors-1036808.jpg&fm=jpg" alt="First slide">
               <div class="carousel-caption d-none d-md-block">
                   <div class="row">
-                      <div class="col-lg-6">
-                          <p class="lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis nam alias blanditiis dolorem at, illo tempore aperiam ad amet quae explicabo, illum libero in, temporibus ab architecto quasi voluptate odio.</p>
+                      <div class="card col-lg-5 mr-5 p-3" style="color: black;opacity: 0.8;font-size:120%;">
+                          <strong>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis nam alias blanditiis dolorem at, illo tempore aperiam ad amet quae explicabo, illum libero in, temporibus ab architecto quasi voluptate odio.</strong>
                           <form method="GET" action="/applicant"><button class="btn btn-primary btn-lg" type="submit">Register as Applicant</button></form>
                       </div>
-                      <div class="col-lg-6">
-                          <p class="lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis nam alias blanditiis dolorem at, illo tempore aperiam ad amet quae explicabo, illum libero in, temporibus ab architecto quasi voluptate odio.</p>
+                      <div class="card col-lg-5 ml-5 p-3" style="color: black;opacity: 0.8;font-size:120%;">
+                          <strong style=" ">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis nam alias blanditiis dolorem at, illo tempore aperiam ad amet quae explicabo, illum libero in, temporibus ab architecto quasi voluptate odio.</strong>
                           <form method="GET" action="/company"><button class="btn btn-primary btn-lg" type="submit">Register as Company</button></form>
                       </div>
                   </div>    
               </div>                            
               </div>
-              <div class="carousel-item">
-              <img class="d-block w-100" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16d86ab793e%20text%20%7B%20fill%3A%23444%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16d86ab793e%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23666%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22247.3125%22%20y%3D%22217.7%22%3ESecond%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Second slide">
-              <div class="carousel-caption d-none d-md-block">
-                  <h5 class="lead">Lorem Ipsum Dolor</h5>
-                  <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque repellendus cumque qui recusandae unde laborum corporis. Ex molestiae, quae possimus molestias facilis illo labore corrupti, numquam autem velit sed obcaecati!</p>
+              <div class="carousel-item" style="max-height:500px;width: 100%;">
+              <img class="d-block" src="https://images.pexels.com/photos/1109543/pexels-photo-1109543.jpeg?cs=srgb&dl=blur-click-company-1109543.jpg&fm=jpg" alt="Second slide">
+              <div class="card carousel-caption d-none d-md-block" style="color: black;opacity: 0.8;font-size:120%;">
+                  <strong style="font-size:120%;">Lorem Ipsum Dolor</strong><br>
+                  <strong>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis nam alias blanditiis dolorem at, illo tempore aperiam ad amet quae explicabo, illum libero in, temporibus ab architecto quasi voluptate odio.</strong>
               </div>
               </div>
-              <div class="carousel-item">
-              <img class="d-block w-100" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16d86ab793f%20text%20%7B%20fill%3A%23333%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16d86ab793f%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23555%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22276.9921875%22%20y%3D%22217.7%22%3EThird%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Third slide">
-              <div class="carousel-caption d-none d-md-block">
-                  <h5 class="lead">Lorem Ipsum Dolor</h5>
-                  <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia cum molestias provident rem nam deserunt exercitationem dignissimos placeat eum rerum? Sequi necessitatibus libero magnam sed deleniti sint quibusdam maiores voluptate!</p>
+              <div class="carousel-item" style="max-height:500px;">
+              <img class="d-block h-100" src="https://images.pexels.com/photos/796602/pexels-photo-796602.jpeg?cs=srgb&dl=ballpen-cell-phone-company-796602.jpg&fm=jpg" alt="Third slide">
+              <div class="card carousel-caption d-none d-md-block" style="color: black;opacity: 0.8;font-size:120%;">
+                  <strong style="font-size:120%;">Lorem Ipsum Dolor</strong><br>
+                  <strong>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis nam alias blanditiis dolorem at, illo tempore aperiam ad amet quae explicabo, illum libero in, temporibus ab architecto quasi voluptate odio.</strong>
               </div>
               </div>
           </div>
