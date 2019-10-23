@@ -13,8 +13,9 @@ Requirements:
 ```pip install Flask-SQLAlchemy```   
 
 Steps to follow: 
-1) Move inside the root directory: 
-2) Run the command: 
+1) Move inside the root directory:
+2) Import *database.sql* file in Xampp  
+3) Run the command:
   ```python run.py```
 
 The website will be active at: *localhost:5000/*
