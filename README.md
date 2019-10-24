@@ -5,17 +5,17 @@ Requirements:
 2) Following Python Modules   
 	Install dependancies using the given commands:  
 ```pip install flask```  
-```pip install flask-bcrypt```  
-```pip install Pillow```  
-```pip install flask-migrate```  
-```pip install flask```  
-```pip install Flask-WTF```  
-```pip install Flask-SQLAlchemy```   
+```pip install Pillow```     
+```pip install Flask-WTF```    
+```pip install mysql.connector```    
+```pip install mysql-connector-python```      
 
+Note: You can run the website without moving it to htdocs.  
 Steps to follow: 
-1) Move inside the root directory:
+1) Move inside the root directory.    
 2) Import *database.sql* file in Xampp  
-3) Run the command:
-  ```python run.py```
+3) Run the command: 
+  ```python run.py```  
+  Note: Ensure that the internet connectivity is stable as BS$ components are directly loaded from its online CDNs.  
 
-The website will be active at: *localhost:5000/*
+The website will be active at: *localhost:5000/*  
